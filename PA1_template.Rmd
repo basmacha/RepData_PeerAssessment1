@@ -7,15 +7,39 @@ output:
 
 
 ## Loading and preprocessing the data
-
+First, I will unzip the files using the unzip function. Then, I will read in the resulting csv into the dataframe titled activity, using the read.csv function.
+I also ran a str function to see, exactly, which variables are present within the dataset.
+```{r unzip, echo=TRUE}
+unzip("activity.zip")
+activity<-read.csv("activity.csv")
+str(activity)
+```
 
 
 ## What is mean total number of steps taken per day?
-
+```{r mean, echo=TRUE}
+library("dplyr")
+#calculate total steps per day 
+stepsbyday<-activity %>% select(steps, date) %>% group_by(date) %>% summarize(stepsbyday=sum(steps, na.rm=TRUE))
+#create histogram of total steps per day 
+hist(stepsbyday$stepsbyday)
+#calculate mean and median steps per day 
+mean(stepsbyday$stepsbyday, na.rm=TRUE)
+median(stepsbyday$stepsbyday, na.rm=TRUE)
+```
 
 
 ## What is the average daily activity pattern?
-
+```{r average, echo=TRUE}
+library("dplyr")
+library("ggplot2")
+#calculate average number of steps taken over the 5-minute intervals 
+stepsbyday<-activity %>% select (steps, date, interval) %>% group_by(interval) %>% summarize(stepsbyday=mean(steps, na.rm=TRUE))
+#graph the plot
+ggplot(stepsbyday, aes(x=interval, y=stepsbyday))+ geom_line()+labs(title="avg.steps daily in intervals")
+#calculate interval that has max number of steps 
+stepsbyday[stepsbyday$stepsbyday==max(stepsbyday$stepsbyday),]
+```
 
 
 ## Imputing missing values
