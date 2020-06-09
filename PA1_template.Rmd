@@ -43,7 +43,34 @@ stepsbyday[stepsbyday$stepsbyday==max(stepsbyday$stepsbyday),]
 
 
 ## Imputing missing values
+According to the xray package,there is approximately 13.11% missing. I subsetted the missing steps, placed them into a dataframe named ismissing, and then used dplyr to spell out the specific dates with missing steps. 
+```{r whichismissing, echo=TRUE}
+library("xray")
+anomalies(activity)
+ismissing<-(activity[is.na(activity$steps),])
+ismissing %>% distinct(date)
+```
+To impute missing values, I am going to use the "roughfix" portion of the randomForest package. Since steps is numeric, it imputes the median for the variable. As we can see, the median of both of the dataframes are equal. While the means have a 5 step gap, the variance are quite close. 
 
+Compared to the estimate, the mean is approximately 2-3K steps higher. Evidently, imputing the missing value has an impact. 
 
+```{r imputetime, echo=TRUE}
+library("randomForest")
+set.seed(20)
+ismissing.roughfix<-na.roughfix(activity)
+median(activity$steps, na.rm=TRUE)
+median(ismissing.roughfix$steps)
 
+mean(activity$steps,na.rm=TRUE)
+mean(ismissing.roughfix$steps)
+
+var(activity$steps, na.rm=TRUE)
+var(ismissing.roughfix$steps)
+```
+
+```{r histogram, echo=TRUE}
+#recalculate total steps per day 
+stepsbyday<-ismissing.roughfix %>% select(steps, date) %>% group_by(date) %>% summarize(stepsbyday=sum(steps, na.rm=TRUE))
+ggplot(stepsbyday, aes(x=stepsbyday))+geom_histogram()+labs(title="total steps")
+```
 ## Are there differences in activity patterns between weekdays and weekends?
