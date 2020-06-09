@@ -257,6 +257,9 @@ ggplot(stepsbyday, aes(x=stepsbyday))+geom_histogram()+labs(title="total steps")
 ```
 
 ![](PA1_template_files/figure-html/histogram-1.png)<!-- -->
+
+
+
 ## Are there differences in activity patterns between weekdays and weekends?
 
 

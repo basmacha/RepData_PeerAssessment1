@@ -81,4 +81,5 @@ ggplot(stepsbyday, aes(x=stepsbyday))+geom_histogram()+labs(title="total steps")
 ```{r creatingweekdaysandweekends, echo=TRUE}
 ismissing.roughfix$date<-as.Date(ismissing.roughfix$date)
 ismissing.roughfix$date<-weekdays(ismissing.roughfix$date)
+recode(ismissing.roughfix$date, Saturday="weekend", Tuesday="Weekend", .default="Weekday")
 ```
