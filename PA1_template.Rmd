@@ -74,3 +74,8 @@ stepsbyday<-ismissing.roughfix %>% select(steps, date) %>% group_by(date) %>% su
 ggplot(stepsbyday, aes(x=stepsbyday))+geom_histogram()+labs(title="total steps")
 ```
 ## Are there differences in activity patterns between weekdays and weekends?
+
+```{r creatingweekdaysandweekends, echo=TRUE}
+#ismissing.roughfix$date<-as.Date(ismissing.roughfix$date)
+ismissing.roughfix$date<-weekdays(ismissing.roughfix$date)
+```
