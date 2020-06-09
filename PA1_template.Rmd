@@ -84,5 +84,5 @@ ismissing.roughfix$date<-weekdays(ismissing.roughfix$date)
 ismissing.roughfix$date<-recode(ismissing.roughfix$date, Saturday="Weekend", Sunday="Weekend", .default="Weekday")
 ismissing.roughfix$date<-factor(ismissing.roughfix$date, levels=c("Weekend", "Weekday"))
 stepsbyweekday<-ismissing.roughfix %>% group_by(interval, date) %>% summarize(stepsbyday=mean(steps))
-ggplot(stepsbyweekday, aes(x=interval, y=stepsbyday))+geom_line()+facet_wrap(~ date)
+ggplot(stepsbyweekday, aes(x=interval, y=stepsbyday))+geom_line()+labs(title="average steps by day per interval based on weekday or weekend")+facet_wrap(~ date)
 ```

@@ -266,4 +266,10 @@ ggplot(stepsbyday, aes(x=stepsbyday))+geom_histogram()+labs(title="total steps")
 ```r
 ismissing.roughfix$date<-as.Date(ismissing.roughfix$date)
 ismissing.roughfix$date<-weekdays(ismissing.roughfix$date)
+ismissing.roughfix$date<-recode(ismissing.roughfix$date, Saturday="Weekend", Sunday="Weekend", .default="Weekday")
+ismissing.roughfix$date<-factor(ismissing.roughfix$date, levels=c("Weekend", "Weekday"))
+stepsbyweekday<-ismissing.roughfix %>% group_by(interval, date) %>% summarize(stepsbyday=mean(steps))
+ggplot(stepsbyweekday, aes(x=interval, y=stepsbyday))+geom_line()+labs(title="average steps by day per interval based on weekday or weekend")+facet_wrap(~ date)
 ```
+
+![](PA1_template_files/figure-html/creatingweekdaysandweekends-1.png)<!-- -->
